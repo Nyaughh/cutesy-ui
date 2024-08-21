@@ -204,7 +204,6 @@ function MuteIcon(props: any) {
       <line x1="23" y1="1" x2="1" y2="23" />
     </svg>
   );
-}
-  `,
+}`,
   },
 };
