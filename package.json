@@ -1,6 +1,6 @@
 {
   "name": "cutesy-ui",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "A cute, ready to use, component library based on shadcn-ui for React",
   "bin": "./bin/cli.js",
   "scripts": {
