@@ -204,6 +204,51 @@ function MuteIcon(props: any) {
       <line x1="23" y1="1" x2="1" y2="23" />
     </svg>
   );
+}`},
+
+  'cutesy-button': {
+    deps: ['button'],
+    code: `
+import React, { ReactNode } from 'react';
+import { Button } from "@/components/ui/button"
+
+interface CutesyButtonProps {
+  children: ReactNode;
+  color?: 'pink' | 'blue' | 'purple' | 'green' | 'yellow';
+  onClick?: () => void;
+}
+
+export default function CutesyButton({ children, color = 'pink', onClick }: CutesyButtonProps) {
+  const colorVariants = {
+    pink: '#FF69B4',
+    blue: '#87CEFA',
+    purple: '#DDA0DD',
+    green: '#98FB98',
+    yellow: '#FFFFE0'
+  };
+
+  const selectedColor = colorVariants[color];
+
+  return (
+    <Button
+      className="bg-white hover:bg-opacity-100 text-opacity-90 font-medium rounded-full px-8 py-4 transition-all duration-300 flex items-center justify-center gap-2 border-2 shadow-md hover:scale-105"
+      style={{
+        color: selectedColor,
+        borderColor: selectedColor,
+        boxShadow: \`0 0 10px \${selectedColor}40\`,
+        minWidth: '180px',
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.boxShadow = \`0 0 20px \${selectedColor}60\`;
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.boxShadow = \`0 0 10px \${selectedColor}40\`;
+      }}
+      onClick={onClick}
+    >
+      {children}
+    </Button>
+  )
 }`,
   },
 };
