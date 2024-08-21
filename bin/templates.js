@@ -1,17 +1,28 @@
 module.exports = {
   audio: {
     deps: ['slider', 'button'],
-    code: `'use client'
+    code: `"use client"
+
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 
-export default function Audio({ src }: { src: string }) {
+export default function Audio() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [audioName, setAudioName] = useState("Audio");
   const audioRef = useRef<HTMLAudioElement>(null);
+
+  useEffect(() => {
+    const audioElement = audioRef.current;
+    if (audioElement) {
+      const src = audioElement.src;
+      const fileName = src.split('/').pop() || "Audio";
+      setAudioName(fileName.replace(/\.[^/.]+$/, "")); // Remove file extension
+    }
+  }, []);
 
   useEffect(() => {
     const audioElement = audioRef.current;
@@ -56,14 +67,14 @@ export default function Audio({ src }: { src: string }) {
   const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
-    return \`\${minutes}:\${seconds < 10 ? '0' : ''}\${seconds}\`;
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
 
   return (
-    <div className="bg-[#FFF0F5] rounded-2xl p-2 w-72 shadow-md">
+    <div className="bg-[#FFF0F5] rounded-2xl p-2 w-60 shadow-md">
       <audio
         ref={audioRef}
-        src={src}
+        src="/Hanae.mp3"
         onTimeUpdate={handleTimeUpdate}
         onLoadedMetadata={handleLoadedMetadata}
         onEnded={handleEnded}
@@ -73,7 +84,7 @@ export default function Audio({ src }: { src: string }) {
           <Button
             variant="ghost"
             size="icon"
-            className="w-8 h-8 rounded-full bg-[#FFB6C1] text-[#FF69B4]"
+            className="w-8 h-8 rounded-full text-[#FF69B4] hover:bg-[#FFB6C1] hover:text-[#FF69B4] transition-colors"
             onClick={() => setIsPlaying(prevState => !prevState)}
           >
             {isPlaying ? (
@@ -82,13 +93,13 @@ export default function Audio({ src }: { src: string }) {
               <PlayIcon className="w-5 h-5" />
             )}
           </Button>
-          <div className="text-[#FF69B4] font-medium text-sm">Song Title</div>
+          <div className="text-[#FF69B4] font-medium text-sm">{audioName}</div>
         </div>
         <div className="flex items-center gap-2">
           <Button
             variant="ghost"
             size="icon"
-            className="w-8 h-8 rounded-full bg-[#FFB6C1] text-[#FF69B4]"
+            className="w-8 h-8 rounded-full text-[#FF69B4] hover:bg-[#FFB6C1] hover:text-[#FF69B4] transition-colors"
             onClick={() => setIsMuted(prevState => !prevState)}
           >
             {isMuted ? (
@@ -107,7 +118,7 @@ export default function Audio({ src }: { src: string }) {
             onValueChange={handleSliderChange}
           />
         </div>
-        <div className="text-[#FF69B4] text-xs">
+        <div className="text-[#FF69B4] text-xs w-16 text-right">
           {formatTime(currentTime)} / {formatTime(duration)}
         </div>
       </div>
